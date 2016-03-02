@@ -2,9 +2,13 @@ from django.contrib import admin
 
 from .models import Student, Lecture, LectureInstance
 
+
 class StudentModelAdmin(admin.ModelAdmin):
-    list_display = ('academic_record', 'name', 'course', 'modality')
+    list_display = ('full_academic_record', 'name', 'course', 'modality', 'enrolled_count')
     search_fields = ('academic_record', 'name', 'course', 'modality')
+
+    def enrolled_count(self, obj):
+        return obj.enrolled_in.count()
 
 
 class LectureModelAdmin(admin.ModelAdmin):

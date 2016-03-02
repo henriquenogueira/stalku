@@ -4,8 +4,8 @@ class Student(models.Model):
 
     name = models.CharField('nome', max_length=255)
     academic_record = models.CharField('RA', max_length=6, unique=True)
-    course = models.CharField(max_length=3, blank=True)
-    modality = models.CharField(max_length=255, blank=True)
+    course = models.CharField('curso', max_length=3, blank=True)
+    modality = models.CharField('modalidade', max_length=255, blank=True)
     created_at = models.DateTimeField('criado em', auto_now_add=True)
 
     class Meta:
@@ -13,9 +13,14 @@ class Student(models.Model):
         verbose_name = 'estudante'
         verbose_name_plural = 'estudantes'
 
+    @property
+    def full_academic_record(self):
+        return self.academic_record.zfill(6)
+
     def __str__(self):
         return '{} - {}'.format(self.academic_record, self.name)
 
+    full_academic_record.fget.short_description = 'registro acadêmico'
 
 class Lecture(models.Model):
     code = models.CharField('código', max_length=7, unique=True)
@@ -34,8 +39,11 @@ class Lecture(models.Model):
 
 class LectureInstance(models.Model):
     lecture = models.ForeignKey('Lecture', help_text='disciplina', on_delete=models.CASCADE)
-    students = models.ManyToManyField('Student', help_text='alunos matriculados', blank=True)
+    students = models.ManyToManyField('Student', help_text='alunos matriculados', related_name='enrolled_in', blank=True)
     group = models.CharField('turma', max_length=2)
+    year = models.IntegerField()
+    semester = models.IntegerField()
+    created_at = models.DateTimeField('criado em', auto_now_add=True)
 
     class Meta:
         ordering = ('group',)

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.test import TestCase
-from stalku.core.models import Student, Lecture
+from stalku.core.models import Student, Lecture, Institute
 
 
 class StudentModelTest(TestCase):
@@ -24,7 +24,15 @@ class StudentModelTest(TestCase):
 
 class LectureModelTest(TestCase):
     def setUp(self):
+
+        institute = Institute.objects.create(
+            code='IC',
+            name='Instituto de Computação'
+        )
+
         self.obj = Lecture(
+            institute=institute,
+            degree_level='grad',
             code='MC102',
             name='Algoritmos e programação de computadores',
             description='Texto muito longo.'

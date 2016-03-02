@@ -1,8 +1,7 @@
-import re
-from bs4 import BeautifulSoup as HtmlBrowser
-from re import search, findall, MULTILINE
-from requests import get
+from re import findall
 
+from bs4 import BeautifulSoup as HtmlBrowser
+from requests import get
 
 # URLS pointing to DAC directories
 URLS = {
@@ -26,7 +25,8 @@ def crawl_institutes(**options):
     degree, semester = options['degree_level'], options['semester']
     catalog_url = URLS[degree]['institutes'].format(semester)
     institutes_html = get(catalog_url).text
-    return findall(r'href="(.*)\.htm\s*"', institutes_html)
+    result = findall(r'href="(.*)\.htm\s*">(.*)\s?</a+', institutes_html)
+    return [{'code': code, 'name': name.strip()} for code, name in result]
 
 
 def crawl_lectures_grad(institute, **options):
@@ -62,7 +62,8 @@ def crawl_lecture_grad(lecture, **options):
         'code': cleaned_code,
         'name': cleaned_title,
         'description': cleaned_details,
-        'groups': turmas
+        'groups': turmas,
+        'degree_level': options['degree_level']
     }
 
 
@@ -103,5 +104,5 @@ def _test_lecture():
 
 if __name__ == '__main__':
     _test_institutes()
-    _test_lectures()
-    _test_lecture()
+    #_test_lectures()
+    #_test_lecture()

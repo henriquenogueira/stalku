@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Student, Lecture, LectureInstance
+from .models import Student, Lecture, LectureInstance, Institute
 
 
 class StudentModelAdmin(admin.ModelAdmin):
@@ -9,6 +9,14 @@ class StudentModelAdmin(admin.ModelAdmin):
 
     def enrolled_count(self, obj):
         return obj.enrolled_in.count()
+
+
+class InstituteModelAdmin(admin.ModelAdmin):
+    list_display = ('code', 'name', 'count_lectures')
+    search_fields = ('code', 'name')
+
+    def count_lectures(self, obj):
+        return obj.lectures.count()
 
 
 class LectureModelAdmin(admin.ModelAdmin):
@@ -36,3 +44,4 @@ class LectureInstanceModelAdmin(admin.ModelAdmin):
 admin.site.register(Student, StudentModelAdmin)
 admin.site.register(Lecture, LectureModelAdmin)
 admin.site.register(LectureInstance, LectureInstanceModelAdmin)
+admin.site.register(Institute, InstituteModelAdmin)

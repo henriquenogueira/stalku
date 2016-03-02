@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from stalku.core.management.commands._students import get_students_for_lecture_instance
 from stalku.core.models import LectureInstance, Student
 
@@ -16,10 +16,12 @@ class Command(BaseCommand):
                             help='Specify the degree level to get information from.')
 
     def handle(self, *args, **options):
+
         lecture_instances = LectureInstance.objects.prefetch_related('lecture')
         for l in lecture_instances:
             self.stdout.write('Getting student list for {}'.format(l))
             students = get_students_for_lecture_instance(l, **options)
-            for s in students:
-                student_obj, updated = Student.objects.get_or_create(**s)
+            for student in students:
+                student_obj, _ = Student.objects.get_or_create(**student)
                 l.students.add(student_obj)
+

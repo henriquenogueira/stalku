@@ -6,7 +6,7 @@ def _get_headers(**options):
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate',
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Cookie': 'JSESSIONID=557887B218E828548D56C1E56ABD1980',
+        'Cookie': 'JSESSIONID={}'.format(options['JSESSIONID']),
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
     }
 
@@ -23,7 +23,7 @@ def get_students_for_lecture_instance(li, **options):
     }
 
     url = 'http://www.daconline.unicamp.br/altmatr/conspub_matriculadospordisciplinaturma.do'
-    r = post(url, data, headers=_get_headers())
+    r = post(url, data, headers=_get_headers(JSESSIONID='557887B218E828548D56C1E56ABD1980'))
     html = HtmlBrowser(r.text, 'html.parser')
 
     students = []

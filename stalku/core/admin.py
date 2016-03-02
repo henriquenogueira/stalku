@@ -13,7 +13,7 @@ class LectureModelAdmin(admin.ModelAdmin):
 
 
 class LectureInstanceModelAdmin(admin.ModelAdmin):
-    list_display = ('lecture_code', 'group', 'lecture_description')
+    list_display = ('lecture_code', 'group', 'lecture_description', 'enrolled_students')
     search_fields = ('lecture__code', 'group', 'lecture__description')
 
     def lecture_code(self, obj):
@@ -21,6 +21,13 @@ class LectureInstanceModelAdmin(admin.ModelAdmin):
 
     def lecture_description(self, obj):
         return obj.lecture.description
+
+    def enrolled_students(self, obj):
+        return obj.students.count()
+
+    lecture_code.short_description = 'código da disciplina'
+    lecture_description.short_description = 'ementa'
+    enrolled_students.short_description = 'inscritos'
 
 admin.site.register(Student, StudentModelAdmin)
 admin.site.register(Lecture, LectureModelAdmin)

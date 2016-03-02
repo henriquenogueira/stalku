@@ -62,7 +62,9 @@ def crawl_lecture_grad(lecture, **options):
         'code': cleaned_code,
         'name': cleaned_title,
         'description': cleaned_details,
-        'groups': turmas
+        'groups': turmas,
+        'year': options['year'],
+        'semester': options['semester']
     }
 
 

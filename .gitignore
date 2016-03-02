@@ -60,6 +60,7 @@ target/
 
 .DS_Store
 *.sqlite3
+db.sqlite3-journal
 .coverage
 .ipynb_checkpoints/
 .python-version

@@ -35,7 +35,8 @@ class Command(BaseCommand):
                     obj, created = Lecture.objects.update_or_create(**lecture)
 
                     for g in groups:
-                        LectureInstance.objects.get_or_create(lecture=obj, group=g)
+                        LectureInstance.objects.get_or_create(lecture=obj, group=g,
+                                                              year=options['year'], semester=options['semester'])
                 except Exception as e:
                     raise CommandError('Error trying to parse {}: {}'.format(l, e))
 

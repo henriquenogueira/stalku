@@ -10,6 +10,8 @@ class StudentModelAdmin(admin.ModelAdmin):
     def enrolled_count(self, obj):
         return obj.enrolled_in.count()
 
+    enrolled_count.short_description = 'inscrições'
+
 
 class InstituteModelAdmin(admin.ModelAdmin):
     list_display = ('code', 'name', 'count_lectures')
@@ -17,6 +19,8 @@ class InstituteModelAdmin(admin.ModelAdmin):
 
     def count_lectures(self, obj):
         return obj.lectures.count()
+
+    count_lectures.short_description = 'número de disciplinas'
 
 
 class LectureModelAdmin(admin.ModelAdmin):

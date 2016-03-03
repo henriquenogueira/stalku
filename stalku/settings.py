@@ -76,10 +76,14 @@ DATABASES = {
     'default': config('DATABASE_URL', default=default_dburl, cast=dburl),
 }
 
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default']['OPTIONS'] = {
+DATABASES['default']['OPTIONS'] = {
         'ssl': {'ca': os.path.join(BASE_DIR, 'contrib', 'amazon-rds-ca-cert.pem')}
     }
+
+#if 'DATABASE_URL' in os.environ:
+#    DATABASES['default']['OPTIONS'] = {
+#        'ssl': {'ca': os.path.join(BASE_DIR, 'contrib', 'amazon-rds-ca-cert.pem')}
+#    }
 
 ########################################################################
 # Password validation

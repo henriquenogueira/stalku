@@ -80,7 +80,7 @@ def _test_institutes():
     for degree_level, exp in expected.items():
         institutes = crawl_institutes(degree_level=degree_level, semester=1)
         assert exp['count'] == len(institutes)
-        assert len(institutes) == len(set(institutes))
+        assert len(institutes) == len(set([x['code'] for x in institutes]))
         print('Institutes for {}: {}'.format(degree_level, institutes))
 
 
@@ -97,12 +97,12 @@ def _test_lectures():
         print('Lectures on {}: {}'.format(institute, lectures))
 
 def _test_lecture():
-    tests = ['F_037', 'MC102', 'CV916']
+    tests = ['F_037', 'MC102', 'CV916', 'EF315']
     for t in tests:
-        print(crawl_lecture_grad(t, semester=1))
+        print(crawl_lecture_grad(t, semester=1, degree_level='grad'))
 
 
 if __name__ == '__main__':
     _test_institutes()
-    #_test_lectures()
-    #_test_lecture()
+    _test_lectures()
+    _test_lecture()

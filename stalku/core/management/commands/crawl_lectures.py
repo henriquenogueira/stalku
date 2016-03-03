@@ -37,11 +37,14 @@ class Command(BaseCommand):
             self.stdout.write('Getting lectures for {}: {} found. '.format(name, len(lectures)))
 
             for l in lectures:
+                if Lecture.objects.filter(code=l.replace('_', ' ')).exists():
+                    continue
+
                 try:
                     lecture = crawl_lecture_grad(l, **options)
                     lecture['institute'] = institute
                     groups = lecture.pop('groups', [])
-                    obj, _ = Lecture.objects.update_or_create(**lecture)
+                    obj, created = Lecture.objects.update_or_create(**lecture)
 
                     for g in groups:
                         LectureInstance.objects.get_or_create(

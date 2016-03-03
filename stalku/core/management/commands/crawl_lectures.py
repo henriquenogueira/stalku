@@ -37,9 +37,6 @@ class Command(BaseCommand):
             self.stdout.write('Getting lectures for {}: {} found. '.format(name, len(lectures)))
 
             for l in lectures:
-                if Lecture.objects.filter(code=l.replace('_', ' ')).exists():
-                    continue
-
                 try:
                     lecture = crawl_lecture_grad(l, **options)
                     lecture['institute'] = institute

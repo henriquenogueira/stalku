@@ -1,14 +1,15 @@
 from django.db import models
 
+
 class Student(models.Model):
     name = models.CharField('nome', max_length=255)
     academic_record = models.CharField('RA', max_length=6, unique=True)
-    course = models.CharField('curso', max_length=3, blank=True)
+    course = models.CharField('curso', max_length=255, blank=True)
     modality = models.CharField('modalidade', max_length=255, blank=True)
     created_at = models.DateTimeField('criado em', auto_now_add=True)
 
     class Meta:
-        ordering = ('academic_record', )
+        ordering = ('academic_record',)
         verbose_name = 'estudante'
         verbose_name_plural = 'estudantes'
 
@@ -31,7 +32,6 @@ class Institute(models.Model):
 
 
 class Lecture(models.Model):
-
     DEGREE_LEVELS = (
         ('grad', 'Graduação'),
         ('pos', 'Pós-graduação')
@@ -55,10 +55,11 @@ class Lecture(models.Model):
 
 class LectureInstance(models.Model):
     lecture = models.ForeignKey('Lecture', help_text='disciplina', on_delete=models.CASCADE)
-    students = models.ManyToManyField('Student', help_text='alunos matriculados', related_name='enrolled_in', blank=True)
+    students = models.ManyToManyField('Student', help_text='alunos matriculados',
+                                      related_name='enrolled_in', blank=True)
     group = models.CharField('turma', max_length=2)
-    year = models.IntegerField()
-    semester = models.IntegerField()
+    year = models.IntegerField('ano')
+    semester = models.IntegerField('semestre')
     created_at = models.DateTimeField('criado em', auto_now_add=True)
 
     class Meta:

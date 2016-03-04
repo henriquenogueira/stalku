@@ -24,4 +24,3 @@ class Command(BaseCommand):
             for student in students:
                 student_obj, _ = Student.objects.get_or_create(**student)
                 l.students.add(student_obj)
-

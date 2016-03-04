@@ -1,21 +1,8 @@
 from re import findall
 
 from bs4 import BeautifulSoup as HtmlBrowser
-from requests import get
-
-# URLS pointing to DAC directories
-URLS = {
-    'grad': {
-        'institutes': 'http://www.dac.unicamp.br/sistemas/horarios/grad/G{}S0/indiceP.htm',
-        'lectures': 'http://www.dac.unicamp.br/sistemas/horarios/grad/G{}S0/{}.htm',
-        'lecture': 'http://www.dac.unicamp.br/sistemas/horarios/grad/G{}S0/{}.htm'
-    },
-    'pos': {
-        'institutes': 'http://www.dac.unicamp.br/sistemas/horarios/pos/P{}S/indiceP.htm',
-        'lectures': 'http://www.dac.unicamp.br/sistemas/horarios/pos/P{}S/{}.htm',
-        'lecture': 'http://www.dac.unicamp.br/sistemas/horarios/pos/P{}S/{}.htm'
-    }
-}
+from django.conf import settings
+from . import session
 
 
 def crawl_institutes(**options):
@@ -23,8 +10,8 @@ def crawl_institutes(**options):
     Gets list of institutes
     """
     degree, semester = options['degree_level'], options['semester']
-    catalog_url = URLS[degree]['institutes'].format(semester)
-    institutes_html = get(catalog_url).text
+    catalog_url = settings.LECTURES_URLS[degree]['institutes'].format(semester)
+    institutes_html = session.get(catalog_url).text
     result = findall(r'href="(.*)\.htm\s*">(.*)\s?</a+', institutes_html)
     return [{'code': code, 'name': name.strip()} for code, name in result]
 
@@ -35,8 +22,8 @@ def crawl_lectures_grad(institute, **options):
     for the graduation degree level
     """
     semester = options['semester']
-    lectures_url = URLS['grad']['lectures'].format(semester, institute)
-    lectures_html = get(lectures_url).text
+    lectures_url = settings.LECTURES_URLS['grad']['lectures'].format(semester, institute)
+    lectures_html = session.get(lectures_url).text
     return findall(r'href="(.*)\.htm\s*"', lectures_html)
 
 
@@ -46,8 +33,8 @@ def crawl_lecture_grad(lecture, **options):
     on the graduation degree level
     """
     semester = options['semester']
-    lecture_url = URLS['grad']['lecture'].format(semester, lecture)
-    html = HtmlBrowser(get(lecture_url).text, 'html.parser')
+    lecture_url = settings.LECTURES_URLS['grad']['lecture'].format(semester, lecture)
+    html = HtmlBrowser(session.get(lecture_url).text, 'html.parser')
 
     title = html.select('a[name]')[0].parent.text
     details = html.select('table > tr > td:nth-of-type(2) > font > font')[0].text

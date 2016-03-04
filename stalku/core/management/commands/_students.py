@@ -1,9 +1,7 @@
-from requests import post
 from bs4 import BeautifulSoup as HtmlBrowser
+from django.conf import settings
+from . import cookie, token, session
 
-from . import cookie, token
-
-SEARCH_LECTURE_URL = 'http://www.daconline.unicamp.br/altmatr/conspub_matriculadospordisciplinaturma.do'
 
 def get_students_for_lecture_instance(li, **options):
     data = {
@@ -16,8 +14,7 @@ def get_students_for_lecture_instance(li, **options):
         'btnAcao': 'Continuar'
     }
 
-    url = SEARCH_LECTURE_URL
-    r = post(url, data, headers={'Cookie': cookie})
+    r = session.post(settings.SEARCH_LECTURE_URL, data, headers={'Cookie': cookie})
     html = HtmlBrowser(r.text, 'html.parser')
 
     students = []
@@ -40,4 +37,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

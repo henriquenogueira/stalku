@@ -1,4 +1,5 @@
 import os
+
 from decouple import config, Csv
 from dj_database_url import parse as dburl
 
@@ -111,3 +112,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+########################################################################
+# Specific DAC URLS
+
+PUBLIC_MENU_URL = 'http://www.daconline.unicamp.br/altmatr/menupublico.do'
+SEARCH_LECTURE_URL = 'http://www.daconline.unicamp.br/altmatr/conspub_matriculadospordisciplinaturma.do'
+
+LECTURES_URLS = {
+    'grad': {
+        'institutes': 'http://www.dac.unicamp.br/sistemas/horarios/grad/G{}S0/indiceP.htm',
+        'lectures': 'http://www.dac.unicamp.br/sistemas/horarios/grad/G{}S0/{}.htm',
+        'lecture': 'http://www.dac.unicamp.br/sistemas/horarios/grad/G{}S0/{}.htm'
+    },
+    'pos': {
+        'institutes': 'http://www.dac.unicamp.br/sistemas/horarios/pos/P{}S/indiceP.htm',
+        'lectures': 'http://www.dac.unicamp.br/sistemas/horarios/pos/P{}S/{}.htm',
+        'lecture': 'http://www.dac.unicamp.br/sistemas/horarios/pos/P{}S/{}.htm'
+    }
+}

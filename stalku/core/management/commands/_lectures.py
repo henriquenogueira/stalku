@@ -83,6 +83,7 @@ def _test_lectures():
         assert len(lectures) == len(set(lectures))
         print('Lectures on {}: {}'.format(institute, lectures))
 
+
 def _test_lecture():
     tests = ['F_037', 'MC102', 'CV916', 'EF315']
     for t in tests:

@@ -16,9 +16,14 @@ class Command(BaseCommand):
                             help='Specify the degree level to get information from.')
 
     def handle(self, *args, **options):
+        lecture_instances = LectureInstance.objects.prefetch_related('lecture', 'students')
 
-        lecture_instances = LectureInstance.objects.prefetch_related('lecture')
         for l in lecture_instances:
+
+            # Skipping lectures that already contain students
+            if l.students.exists():
+                continue
+
             self.stdout.write('Getting student list for {}'.format(l))
             students = get_students_for_lecture_instance(l, **options)
             for student in students:

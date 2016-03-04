@@ -36,17 +36,17 @@ class Command(BaseCommand):
             lectures = crawl_lectures_grad(code, **options)
             self.stdout.write('Getting lectures for {}: {} found. '.format(name, len(lectures)))
 
-            for l in lectures:
+            existing_lecs = [x['code'] for x in Lecture.objects.values('code')]
+            for l in [lec for lec in lectures if lec.replace('_', ' ') not in existing_lecs]:
                 try:
-                    lecture = crawl_lecture_grad(l, **options)
-                    lecture['institute'] = institute
-                    groups = lecture.pop('groups', [])
-                    obj, created = Lecture.objects.update_or_create(**lecture)
+                    lecture_args = crawl_lecture_grad(l, **options)
+                    lecture_args['institute'] = institute
+                    groups = lecture_args.pop('groups', [])
+                    obj = Lecture.objects.create(**lecture_args)
 
                     for g in groups:
-                        LectureInstance.objects.get_or_create(
-                            lecture=obj,
-                            group=g,
+                        LectureInstance.objects.create(
+                            lecture=obj, group=g,
                             year=options['year'],
                             semester=options['semester']
                         )

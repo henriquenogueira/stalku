@@ -4,7 +4,8 @@ from .models import Student, Lecture, LectureInstance, Institute
 
 
 class StudentModelAdmin(admin.ModelAdmin):
-    list_display = ('full_academic_record', 'name', 'course', 'modality', 'enrolled_count')
+    list_display = ('full_academic_record', 'name', 'course',
+                    'modality', 'enrolled_count')
     search_fields = ('academic_record', 'name', 'course', 'modality')
 
     def enrolled_count(self, obj):
@@ -29,7 +30,8 @@ class LectureModelAdmin(admin.ModelAdmin):
 
 
 class LectureInstanceModelAdmin(admin.ModelAdmin):
-    list_display = ('lecture_code', 'group', 'lecture_description', 'enrolled_students')
+    list_display = ('lecture_code', 'group', 'year', 'semestre',
+                    'lecture_description', 'enrolled_students')
     search_fields = ('lecture__code', 'group', 'lecture__description')
 
     def lecture_code(self, obj):
@@ -44,6 +46,7 @@ class LectureInstanceModelAdmin(admin.ModelAdmin):
     lecture_code.short_description = 'código da disciplina'
     lecture_description.short_description = 'ementa'
     enrolled_students.short_description = 'inscritos'
+
 
 admin.site.register(Student, StudentModelAdmin)
 admin.site.register(Lecture, LectureModelAdmin)

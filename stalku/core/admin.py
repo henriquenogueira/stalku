@@ -30,7 +30,7 @@ class LectureModelAdmin(admin.ModelAdmin):
 
 
 class LectureInstanceModelAdmin(admin.ModelAdmin):
-    list_display = ('lecture_code', 'group', 'year', 'semestre',
+    list_display = ('lecture_code', 'group', 'year', 'semester',
                     'lecture_description', 'enrolled_students')
     search_fields = ('lecture__code', 'group', 'lecture__description')
 
